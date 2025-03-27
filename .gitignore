@@ -7,3 +7,5 @@
 _site/
 docs/
 .html
+_freeze/
+_extensions/
