@@ -1,0 +1,57 @@
+---
+title: "Pre-workshop instructions"
+format: html
+execute: 
+  eval: false
+---
+
+Prior to the workshop, please complete the following steps:
+
+*If you have trouble with these steps, or you'd prefer not to mess with your current set up, you can also work in Posit Cloud. See [Backup option](#backup-option-posit-cloud) below.*
+
+
+#### 1. Software
+
+Download and install the latest versions of R, RStudio, and Quarto:
+
+-   R 4.2.3 or above: <https://cran.r-project.org>
+-   RStudio 2024.04.0 or above: <https://posit.co/download/rstudio-desktop>
+-   Quarto 1.4 or above: <https://quarto.org/docs/download> 
+
+#### 2. R Packages
+
+Install the following packages by copying and pasting the following into the console in RStudio:
+
+```{r}
+install.packages(c("dplyr", "fs", "ggplot2", "here", "janitor", "knitr", 
+                    "lubridate", "plotly", "purrr", "quarto", "readr", 
+                    "rmarkdown", "stringr", "tidyr"))
+```
+
+#### 3. Exercises
+
+Download and open the exercises for this workshop by copying and pasting the following into the console in RStudio:
+
+This will download the RStudio project onto your Desktop. To choose a different destination, uncomment and use the `destdir` argument.
+
+```{r}
+# install.packages("usethis")
+usethis::use_course(
+  "https://github.com/jadeynryan/parameterized-quarto-workshop/raw/cascadia/exercises/intermediate-exercises.zip"
+# , destdir = "C:/Users/jryan/Documents/R/projects"
+  )
+```
+
+If `use_course()` didn't work, manually download the zip file from GitHub: [github.com/jadeynryan/parameterized-quarto-workshop/tree/cascadia/exercises](https://github.com/jadeynryan/parameterized-quarto-workshop/tree/cascadia/exercises).
+
+## Backup option: Posit Cloud
+
+You can choose to use Posit Cloud instead which has the required tools already installed, along with a copy of the exercise files. Join the Posit Cloud [Quarto Cascadia workspace](https://posit.cloud/spaces/519059/join?access_code=ckv18LHEcSw3QtQ904uvpzLVlh4L2rk6RhKdpwyp) and open the [Intermediate Exercises project](https://posit.cloud/spaces/519059/content/8351107).
+
+## `purrr` {#sec-purrr}
+
+If you're new to `purrr`, we recommend watching this R-Ladies Baltimore
+presentation [*Make your R Code purr with
+`purrr`*](https://www.youtube.com/watch?v=IewsPpjKElc) and reviewing Jenny
+Bryan's [tutorial](https://jennybc.github.io/purrr-tutorial/) and
+[workshop](https://github.com/jennybc/row-oriented-workflows).

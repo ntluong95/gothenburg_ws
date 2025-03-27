@@ -1,0 +1,94 @@
+project:
+  type: website
+  render:
+    - "*.qmd"
+  preview:
+    port: 3434
+    browser: true
+    watch-inputs: true
+    timeout: 3600
+
+execute:
+  freeze: auto
+  echo: true
+
+website:
+  page-navigation: true
+  title: "Intermediate Quarto: Parameterized Reports Workshop"
+  description: "Homepage for the Intermediate Quarto: Parameterized Reports Workshop at Cascadia R Conf 2024"
+  site-url: "https://jadeyryan.quarto.pub/cascadia-quarto/"
+  favicon: "images/cascadia-jr-quarto.webp"
+
+  repo-url: https://github.com/jadeynryan/parameterized-quarto-workshop
+  repo-actions: [source, edit, issue]
+
+  page-footer:
+    left: "&copy; 2024 Jadey Ryan"
+    center: "Website built with ❤︎️ and [Quarto](https://quarto.org/)."
+    right: "Inspired by [R/Medicine 2023 workshop](https://github.com/shannonpileggi/rmedicine-data-cleaning-2023) and [ASA Traveling Courses on Quarto](https://quarto.org/docs/blog/posts/2023-12-05-asa-traveling-courses/)."
+    background: "#07483f"
+
+  sidebar:
+    background: "#07483f"
+    logo: "images/cascadia-jr-quarto.webp"
+    logo-alt: "Cascadia R Conf hex sticker on top of JR's cat hex logo joined by a heart with the Quarto hex sticker."
+    pinned: true
+    align: center
+    style: docked
+    type: dark
+    tools:
+      - icon: github
+        href: https://github.com/jadeynryan/parameterized-quarto-workshop
+        text: GitHub
+    contents:
+     - href: index.qmd
+       text: Home
+     - href: prework.qmd
+       text: Pre-work
+     - href: license.qmd
+       text: License
+     - text: "---"
+     - section: Slides
+       contents:
+       - href: 1-welcome/index.qmd
+         text: Welcome
+       - href: 2-parameters/index.qmd
+         text: Parameters
+       - href: 3-render/index.qmd
+         text: Render
+       - href: 4-conditionals/index.qmd
+         text: Conditionals
+
+
+format:
+  html:
+    theme: [flatly, theme.scss]
+    toc: true
+    smooth-scroll: true
+    link-external-newwindow: true
+    code-link: true
+    code-copy: true
+    code-overflow: scroll
+    mainfont: Atkinson Hyperlegible
+    highlight-style: a11y
+
+  revealjs:
+    author: "Jadey Ryan // June 21, 2024<br>Intermediate Quarto // Cascadia R Conf"
+    footer: "[jadeyryan.quarto.pub/cascadia-quarto/](https://jadeyryan.quarto.pub/cascadia-quarto/)"
+    logo: "images/cascadia-jr-quarto.webp"
+    logo-alt: "Cascadia R Conf hex sticker on top of JR's cat hex logo joined by a heart with the Quarto hex sticker."
+    width: 1600
+    height: 900
+    theme: slides.scss
+    highlight-style: a11y
+    transition: fade
+    slide-number: true
+    df-print: kable
+
+# lightbox extension
+# https://github.com/quarto-ext/lightbox
+lightbox:
+  desc-position: right  # position of description
+  # match: auto # give all images lightbox treatment
+  effect: zoom # how lightbox opens/closes
+  loop: false # doesn't loop to first image in gallery

@@ -1,0 +1,59 @@
+---
+title: "Introduction to R and DLNM package in environmental epidemiology"
+format: html
+---
+
+**University of Gothenburg, Sweden, 2025**
+
+📆 April 28-29, 2025
+🏫 Place-Guldhedsgatan 5, 43120, Gothenburg\
+🐙 [GitHub
+release](https://github.com/jadeynryan/parameterized-quarto-workshop/tree/cascadia)\
+
+<!-- ::: callout-important -->
+<!-- This workshop is currently being updated. Materials, links, and -->
+<!-- exercises are subject to change. -->
+<!-- ::: -->
+
+## Description
+
+This workshop is designed to build foundational skills in R, covering everything from importing and cleaning data to transforming it for analysis. It also introduces essential statistical techniques used in environmental epidemiology, including `Distributed Lag Non-linear Models (DLNM)`, `Cox regression`, `time series analysis`, and data visualization with `ggplot2`.
+
+## Learning objectives
+
+-   Understand what parameterized reporting is and when it is useful.
+-   Convert a Quarto document into a parameterized template and render
+    all variations.
+-   Generate multiple format outputs from the same template using
+    conditional content, conditional code execution, and custom styling.
+
+## Schedule
+
+| Time        | Topic                                                           |
+|-------------|-----------------------------------------------------------------|
+| 1:30 - 2:00 | [Welcome](1-welcome/) & [Parameterizing reports](2-parameters/) |
+| 2:00 - 3:00 | [Rendering reports](3-render/)                                  |
+| 3:00 - 3:30 | Break                                                           |
+| 3:30 - 4:00 | [Conditional content & code](4-conditionals/)                   |
+| 4:00 - 4:20 | [Styling reports](5-style/)                                     |
+| 4:20 - 4:30 | [Summary](6-summary/)                                           |
+
+## Speaker
+
+![](images/jadey.jpg){style="float:left;padding: 0 10px 0 0; border-radius:50%"
+fig-alt="Headshot of Jadey Ryan" width="150"} [**Jadey
+Ryan**](https://jadeyryan.com) is a data scientist in [Natural Resources
+and Agricultural Sciences](https://agr.wa.gov/AgScience) at the
+Washington State Department of Agriculture. She is an R enthusiast
+obsessed with efficiently creating beautiful data products and
+decision-support tools, especially with Quarto. Away from the computer,
+find her trying new foods with her husband, snuggling with her three
+cats, or taking leisurely strolls in the great outdoors.
+
+Learn more at [jadeyryan.com](https://jadeyryan.com).
+
+[{{< fa link size=xl >}}](https://jadeyryan.com)
+[{{< fa brands mastodon size=xl >}}](https://fosstodon.org/@jadeynryan)
+[{{< fa brands linkedin size=xl >}}](https://www.linkedin.com/in/jadey-ryan)
+[{{< fa brands github size=xl >}}](https://github.com/jadeynryan/)
+[{{< fa brands etsy size=xl >}}](https://thecodingcats.etsy.com/)
