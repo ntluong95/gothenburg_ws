@@ -1,0 +1,136 @@
+---
+title: "Introduction to R and Quarto<br>![](../images/logo.png){width=5em}"
+format: revealjs
+---
+
+## Before we start...
+
+Open the workshop website and make sure you've completed the pre-work
+and have the required software, packages, and exercises.
+
+[**ntluong95.quarto.pub/gothenburg_ws2025/prework**](https://ntluong95.quarto.pub/gothenburg_ws2025/prework).
+
+If you have not done it yet, you still have some times.
+
+```{r}
+#| echo: false
+countdown::countdown(minutes = 5, bottom = 0)
+```
+
+
+## Learning objectives
+
+::: incremental
+- Understand the fundamentals of R and its development environment.
+- Get introduced to Quarto and learn how to create dynamic, reproducible reports.
+- Convert a Quarto document into an interactive sharable report.
+- Be able to clean and transforming data with R
+:::
+
+## Schedule
+
+| Time         | Topic                                                    |
+|--------------|----------------------------------------------------------|
+| 9:00 - 9:30  | Welcome & Overview of R and Quarto                       |
+| 9:30 - 10:30 | Basics functions used in importing and cleaning datasets |
+| 10:30 - 10:45| Break                                                    |
+| 10:45 - 12:00| Transforming data for analysis using participants' examples   |
+| 11:45 - 12:00| Lunch Break                                              |
+
+
+## Basic R syntax
+
+### Pipes
+
+-   Used to chain (connect) several functions together
+-   2014+ magrittr pipe `%>%`
+-   2021+ (R $\geq$ 4.1.0) native R pipe `|>`
+
+
+::: columns
+::: {.column width="50%"}
+```{r}
+#| echo: true
+#| eval: false
+do_something(arg1, arg2, arg3, ...)
+
+arg1 |>
+  do_something(arg2, arg3)
+```
+
+:::
+
+
+::: {.column width="50%"}
+```{r}
+#| echo: true
+#| eval: false
+mean(0:10)
+
+0:10 |>
+  mean()
+```
+
+:::
+:::
+
+Keyboard shortcut to create pipe:
+
+Windows: `Ctrl` + `Shift` + `M`
+
+Mac: `Cmd` + `Shift` + `M`
+
+
+
+## Namespacing
+
+`package::function()`
+
+`dplyr::select()`
+
+
+-   tells R explicitly to use the function `select` from the package `dplyr`
+-   helps avoid name conflicts (e.g., `MASS::select()`)
+-   does not require to call `library(dplyr)`
+
+## Load packages
+
+-   Classically, load single package with `library(package_name)` function
+-   The modern syntax using `pacman::p_load()` function (pacman: package manager)
+-   `pacman` will automatically install and load package
+
+
+::: columns
+::: {.column width="50%"}
+```{r}
+#| echo: true
+#| eval: false
+# Classic syntax
+install.packages("tidyverse")
+install.packages("dlnm")
+
+library(tidyverse)
+library(dlnm)
+```
+
+:::
+
+
+::: {.column width="50%"}
+```{r}
+#| echo: true
+#| eval: false
+# Modern syntax
+pacman::p_load(
+  tidyverse,
+  dlnm
+)
+```
+
+:::
+:::
+
+## Quarto 
+
+Quarto is a publishing system that supports many multiple & outputs
+
