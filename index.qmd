@@ -1,5 +1,5 @@
 ---
-title: "Introduction to R and DLNM package in environmental epidemiology"
+title: "Introduction to R and statistical packages in environmental epidemiology"
 format: html
 ---
 
@@ -8,7 +8,7 @@ format: html
 📆 April 28-29, 2025
 🏫 Place-Guldhedsgatan 5, 43120, Gothenburg\
 🐙 [GitHub
-release](https://github.com/jadeynryan/parameterized-quarto-workshop/tree/cascadia)\
+release](https://github.com/ntluong95/gothenburg_ws)\
 
 <!-- ::: callout-important -->
 <!-- This workshop is currently being updated. Materials, links, and -->
@@ -21,39 +21,43 @@ This workshop is designed to build foundational skills in R, covering everything
 
 ## Learning objectives
 
--   Understand what parameterized reporting is and when it is useful.
--   Convert a Quarto document into a parameterized template and render
-    all variations.
--   Generate multiple format outputs from the same template using
-    conditional content, conditional code execution, and custom styling.
+- Develop proficiency in using R to import, clean, and transform data, ensuring it is analysis-ready.
+- Understand and apply common statistical methods in environmental epidemiology, such as DLNM, Cox regression, and time series analysis.
+- Master the creation of effective visualizations with ggplot2 to communicate data insights.
+- Gain practical experience in preparing and analyzing environmental health data using R.
 
 ## Schedule
 
-| Time        | Topic                                                           |
-|-------------|-----------------------------------------------------------------|
-| 1:30 - 2:00 | [Welcome](1-welcome/) & [Parameterizing reports](2-parameters/) |
-| 2:00 - 3:00 | [Rendering reports](3-render/)                                  |
-| 3:00 - 3:30 | Break                                                           |
-| 3:30 - 4:00 | [Conditional content & code](4-conditionals/)                   |
-| 4:00 - 4:20 | [Styling reports](5-style/)                                     |
-| 4:20 - 4:30 | [Summary](6-summary/)                                           |
+### Day 1
+
+| Time         | Topic                                                                                   |
+|--------------|-----------------------------------------------------------------------------------------|
+| 9:00 - 9:30  | **Welcome & Overview**<br>Introduction to workshop objectives and the R environment      |
+| 9:30 - 10:30 | **Data Import & Cleaning**<br>Hands-on session for importing and cleaning datasets        |
+| 10:30 - 10:45| **Break**                                                                               |
+| 10:45 - 12:00| **Data Transformation**<br>Transforming data for analysis with practical examples         |
+| 12:00 - 1:00 | **Lunch Break**                                                                         |
+| 1:00 - 2:30  | **Statistical Methods in Environmental Epidemiology**<br>Overview of DLNM, Cox regression, and time series analysis |
+| 2:30 - 2:45  | **Break**                                                                               |
+| 2:45 - 4:00  | **Hands-on Analysis**<br>Applying statistical methods and creating visualizations using ggplot2 |
+| 4:00 - 4:30  | **Wrap-up & Q&A**<br>Review of key concepts and open discussion                          |
+
+### Day 2 (Half-Day)
+
+| Time         | Topic                                                                                   |
+|--------------|-----------------------------------------------------------------------------------------|
+| 9:00 - 10:30 | **Advanced Integration**<br>Combining data preparation, analysis, and visualization in R  |
+| 10:30 - 10:45| **Break**                                                                               |
+| 10:45 - 12:00| **Project Work & Final Q&A**<br>Interactive session analyzing an environmental health dataset|
+| 12:00        | **Closing**<br>Final thoughts and workshop feedback        
 
 ## Speaker
 
-![](images/jadey.jpg){style="float:left;padding: 0 10px 0 0; border-radius:50%"
-fig-alt="Headshot of Jadey Ryan" width="150"} [**Jadey
-Ryan**](https://jadeyryan.com) is a data scientist in [Natural Resources
-and Agricultural Sciences](https://agr.wa.gov/AgScience) at the
-Washington State Department of Agriculture. She is an R enthusiast
-obsessed with efficiently creating beautiful data products and
-decision-support tools, especially with Quarto. Away from the computer,
-find her trying new foods with her husband, snuggling with her three
-cats, or taking leisurely strolls in the great outdoors.
+![](images/headshot.jpg){style="float:left;padding: 0 10px 0 0; border-radius:50%"
+fig-alt="Headshot of Luong Nguyen Thanh" width="150"} [**Luong Nguyen Thanh**](https://ntluong95.github.io/profile/) graduated from Hanoi Medical University, Vietnam and University of Liege, Belgium with honors. He is currently a PhD student at Uppsala University, Sweden. His research focuses on various topics of One Health, Global Health, and Sustainability. Alongside his academic pursuits, Luong is a skilled programmer, proficient in R and experienced in developing tools such as software packages, dashboards, Shiny applications, and Large Language Models. He is also at an intermediate level in Python and entry level of SQL, HTML, CSS, and JavaScript.
 
-Learn more at [jadeyryan.com](https://jadeyryan.com).
+Learn more about [Luong](https://ntluong95.github.io/profile/).
 
-[{{< fa link size=xl >}}](https://jadeyryan.com)
-[{{< fa brands mastodon size=xl >}}](https://fosstodon.org/@jadeynryan)
-[{{< fa brands linkedin size=xl >}}](https://www.linkedin.com/in/jadey-ryan)
-[{{< fa brands github size=xl >}}](https://github.com/jadeynryan/)
-[{{< fa brands etsy size=xl >}}](https://thecodingcats.etsy.com/)
+[{{< fa link size=xl >}}](https://ntluong95.github.io/profile/)
+[{{< fa brands linkedin size=xl >}}](https://www.linkedin.com/in/ntluong95/)
+[{{< fa brands github size=xl >}}](https://github.com/ntluong95/)

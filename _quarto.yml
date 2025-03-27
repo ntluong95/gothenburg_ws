@@ -14,24 +14,23 @@ execute:
 
 website:
   page-navigation: true
-  title: "Intermediate Quarto: Parameterized Reports Workshop"
-  description: "Homepage for the Intermediate Quarto: Parameterized Reports Workshop at Cascadia R Conf 2024"
-  site-url: "https://jadeyryan.quarto.pub/cascadia-quarto/"
-  favicon: "images/cascadia-jr-quarto.webp"
+  title: "Introduction to R and statistical packages in environmental epidemiology"
+  description: "Homepage for the Introduction to R and statistical packages in environmental epidemiology"
+  site-url: "https://ntluong95.quarto.pub/gothenburg_ws2025/"
+  favicon: "images/jr-logo-circle.webp"
 
-  repo-url: https://github.com/jadeynryan/parameterized-quarto-workshop
+  repo-url: https://github.com/ntluong95/gothenburg_ws
   repo-actions: [source, edit, issue]
 
   page-footer:
-    left: "&copy; 2024 Jadey Ryan"
-    center: "Website built with ❤︎️ and [Quarto](https://quarto.org/)."
-    right: "Inspired by [R/Medicine 2023 workshop](https://github.com/shannonpileggi/rmedicine-data-cleaning-2023) and [ASA Traveling Courses on Quarto](https://quarto.org/docs/blog/posts/2023-12-05-asa-traveling-courses/)."
-    background: "#07483f"
+    left: "&#169; 2025 Luong Nguyen Thanh"
+    right: "Made with [Quarto Website](https://quarto.org)"
+    background: "#0b7366"
 
   sidebar:
-    background: "#07483f"
-    logo: "images/cascadia-jr-quarto.webp"
-    logo-alt: "Cascadia R Conf hex sticker on top of JR's cat hex logo joined by a heart with the Quarto hex sticker."
+    background: "#0b7366"
+    logo: "images/jr-logo-circle.webp"
+    logo-alt: "A symbolic representation of the speaker"
     pinned: true
     align: center
     style: docked
@@ -51,13 +50,13 @@ website:
      - section: Slides
        contents:
        - href: 1-welcome/index.qmd
-         text: Welcome
-       - href: 2-parameters/index.qmd
-         text: Parameters
-       - href: 3-render/index.qmd
-         text: Render
-       - href: 4-conditionals/index.qmd
-         text: Conditionals
+         text: Introduction to R & Quarto
+      #  - href: 2-parameters/index.qmd
+      #    text: Parameters
+      #  - href: 3-render/index.qmd
+      #    text: Render
+      #  - href: 4-conditionals/index.qmd
+      #    text: Conditionals
 
 
 format:
@@ -70,17 +69,17 @@ format:
     code-copy: true
     code-overflow: scroll
     mainfont: Atkinson Hyperlegible
-    highlight-style: a11y
+    highlight-style: atom-one
 
   revealjs:
-    author: "Jadey Ryan // June 21, 2024<br>Intermediate Quarto // Cascadia R Conf"
-    footer: "[jadeyryan.quarto.pub/cascadia-quarto/](https://jadeyryan.quarto.pub/cascadia-quarto/)"
-    logo: "images/cascadia-jr-quarto.webp"
-    logo-alt: "Cascadia R Conf hex sticker on top of JR's cat hex logo joined by a heart with the Quarto hex sticker."
+    author: "Luong Nguyen Thanh // April 28-29, 2025<br>Basic R // GU Workshop 2025"
+    footer: "[ntluong95.quarto.pub/gothenburg_ws2025/](https://ntluong95.quarto.pub/gothenburg_ws2025)"
+    logo: "images/jr-logo-circle.webp"
+    logo-alt: "A symbolic representation of the speaker"
     width: 1600
     height: 900
     theme: slides.scss
-    highlight-style: a11y
+    highlight-style: atom-one
     transition: fade
     slide-number: true
     df-print: kable

@@ -3,7 +3,7 @@ title: "Disclaimer and license"
 format: html
 ---
 
-&copy; 2024 Jadey Ryan
+&copy; 2025 Luong Nguyen Thanh
 
 Opinions expressed are solely my own and do not express the views of my employer or any organizations I am associated with.
 
