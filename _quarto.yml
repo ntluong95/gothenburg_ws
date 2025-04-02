@@ -51,12 +51,20 @@ website:
        contents:
        - href: 1-welcome/index.qmd
          text: Introduction to R & Quarto
-      #  - href: 2-parameters/index.qmd
-      #    text: Parameters
-      #  - href: 3-render/index.qmd
-      #    text: Render
-      #  - href: 4-conditionals/index.qmd
-      #    text: Conditionals
+       - href: 3-dlnm/dlnm.qmd
+         text: dlnm package in R
+     - text: "---"
+     - section: Exercies
+       contents:
+       - href: data/Miriam_analysis.qmd
+         text: Example analysis from Miriam's data
+       - href: data/Lea_analysis.qmd
+         text: Example analysis from Lea's data
+       - href: data/Linet_analysis.qmd
+         text: Example analysis from Linet's data
+
+       - href: 4-paper/heat_preterm-birth.qmd
+         text: Associations between ambient temperature and risk of preterm birth in Sweden
 
 
 format:
@@ -84,6 +92,7 @@ format:
     slide-number: true
     df-print: kable
 
+bibliography: references.bib  
 # lightbox extension
 # https://github.com/quarto-ext/lightbox
 lightbox:
