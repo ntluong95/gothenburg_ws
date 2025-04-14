@@ -11,7 +11,9 @@ pacman::p_load(
 )
 
 
-data <- import(here("~/MGH/Thesis/Merged_IR+GPS_all 8 countries_Linet_20.03.2025.dta"))
+data <- import(here(
+  "~/MGH/Thesis/Merged_IR+GPS_all 8 countries_Linet_20.03.2025.dta"
+))
 
 data_subset <- data %>%
   select(
@@ -32,7 +34,7 @@ data_subset <- data %>%
     tobacco_consumption,
     ironTab_binary,
     ironTab_bin_duration,
-    case_control#deworming Tab is missing & I assume this is the end-date
+    case_control #deworming Tab is missing & I assume this is the end-date
   )
 
 km_data <- data_subset %>%
@@ -64,7 +66,7 @@ ggsurvplot(
   legend.title = "Country",
   xlab = "Months since pregnancy",
   ylab = "Survival probability (no delay)",
-  palette = "Set1",# or use any ggplot2 color palette
+  palette = "Set1", # or use any ggplot2 color palette
 )
 
 #Step1: DLNM unadjusted and all countries together
@@ -89,11 +91,11 @@ temp_matrix <- data_subset %>%
   ) %>%
   select(-unique_caseid) %>%
   as.data.frame()
-  #as.matrix()
+#as.matrix()
 
 # Check the dimensions of temp_matrix
-dim(temp_matrix)  # Should return 432 rows (unique_caseid count) and 21 columns (lag_0 to lag_20)
-str(temp_matrix)  # To confirm number of columns
+dim(temp_matrix) # Should return 432 rows (unique_caseid count) and 21 columns (lag_0 to lag_20)
+str(temp_matrix) # To confirm number of columns
 
 
 cb_temp <- crossbasis(
@@ -117,7 +119,6 @@ sjPlot::tab_model(model_cox_normal)
 pred <- crosspred(cb_temp, model_cox_normal, by = 0.1, cumul = TRUE)
 
 colnames(km_data)
-
 
 
 # Plot the overall cumulative effect (adjust parameters as needed)
@@ -156,7 +157,6 @@ plot(
 )
 
 
-
 #Step2: DLNM adjusted and all country
 km_data_adj <- data_subset %>%
   group_by(unique_caseid) %>%
@@ -165,9 +165,9 @@ km_data_adj <- data_subset %>%
     eventmonth_since_pregnancy = n(),
     anemia = max(anemia),
     dhscc = first(dhscc),
-    age_binary =  first(age_binary),
+    age_binary = first(age_binary),
     v025 = first(v025),
-    edu_binary = first(edu_binary),  # Ensure edu_binary is retained
+    edu_binary = first(edu_binary), # Ensure edu_binary is retained
     wealth_category = first(wealth_category),
     anc_binary = first(anc_binary),
     v481 = first(v481),
@@ -196,7 +196,7 @@ ggsurvplot(
   legend.title = "Country",
   xlab = "Months since pregnancy",
   ylab = "Survival probability (no delay)",
-  palette = "Set1",# or use any ggplot2 color palette
+  palette = "Set1", # or use any ggplot2 color palette
 )
 
 library(dplyr)
@@ -223,8 +223,8 @@ temp_matrix_adj <- data_subset %>%
 #as.matrix()
 
 # Check the dimensions of temp_matrix
-dim(temp_matrix_adj)  # Should return 432 rows (unique_caseid count) and 21 columns (lag_0 to lag_20)
-str(temp_matrix_adj)  # To confirm number of columns
+dim(temp_matrix_adj) # Should return 432 rows (unique_caseid count) and 21 columns (lag_0 to lag_20)
+str(temp_matrix_adj) # To confirm number of columns
 
 cb_temp_adj <- crossbasis(
   temp_matrix_adj,
@@ -239,7 +239,18 @@ dim(cb_temp_adj)
 colnames(km_data_adj)
 #Adjusted cox model
 model_cox_normal_adj <- coxph(
-  Surv(eventmonth_since_pregnancy, anemia) ~ cb_temp_adj + strata(dhscc) + age_binary + v025 + edu_binary + wealth_category + anc_binary + v481 + depression_status + tobacco_consumption + ironTab_binary,
+  Surv(eventmonth_since_pregnancy, anemia) ~
+    cb_temp_adj +
+      strata(dhscc) +
+      age_binary +
+      v025 +
+      edu_binary +
+      wealth_category +
+      anc_binary +
+      v481 +
+      depression_status +
+      tobacco_consumption +
+      ironTab_binary,
   data = km_data_adj
 )
 
@@ -286,7 +297,7 @@ plot(
 
 #Step3: DLNM for Tanzania unadjusted
 data_subset_TZ <- data %>%
-  filter(dhscc == "TZ") %>%  # Keep only Tanzania
+  filter(dhscc == "TZ") %>% # Keep only Tanzania
   select(
     unique_caseid,
     dhscc,
@@ -312,13 +323,13 @@ km_data_TZ_uadj <- data_subset_TZ %>%
   summarise(
     eventmonth_since_pregnancy = n(),
     anemia = max(anemia),
-    dhscc = first(dhscc)  # Already filtered for Tanzania
+    dhscc = first(dhscc) # Already filtered for Tanzania
   ) %>%
   ungroup() %>%
   filter(eventmonth_since_pregnancy >= 2 & eventmonth_since_pregnancy <= 21)
 
 km_fit_TZ_uadj <- survfit(
-  Surv(eventmonth_since_pregnancy, anemia) ~ 1,  # No need for dhscc (only Tanzania)
+  Surv(eventmonth_since_pregnancy, anemia) ~ 1, # No need for dhscc (only Tanzania)
   data = km_data_TZ_uadj
 )
 
@@ -348,12 +359,17 @@ cb_temp_TZ_uadj <- crossbasis(
 )
 
 model_cox_normal_TZ_uadj <- coxph(
-  Surv(eventmonth_since_pregnancy, anemia) ~ cb_temp_TZ_uadj,  # dhscc removed, since only Tanzania is included
+  Surv(eventmonth_since_pregnancy, anemia) ~ cb_temp_TZ_uadj, # dhscc removed, since only Tanzania is included
   data = km_data_TZ_uadj
 )
 
 sjPlot::tab_model(model_cox_normal_TZ_uadj)
-pred_TZ_uadj <- crosspred(cb_temp_TZ_uadj, model_cox_normal_TZ_uadj, by = 0.1, cumul = TRUE)
+pred_TZ_uadj <- crosspred(
+  cb_temp_TZ_uadj,
+  model_cox_normal_TZ_uadj,
+  by = 0.1,
+  cumul = TRUE
+)
 
 # Plot the overall cumulative effect for TZ unadjusted
 plot(
@@ -399,9 +415,9 @@ km_data_TZ_adj <- data_subset_TZ %>%
     eventmonth_since_pregnancy = n(),
     anemia = max(anemia),
     dhscc = first(dhscc),
-    age_binary =  first(age_binary),
+    age_binary = first(age_binary),
     v025 = first(v025),
-    edu_binary = first(edu_binary),  # Ensure edu_binary is retained
+    edu_binary = first(edu_binary), # Ensure edu_binary is retained
     wealth_category = first(wealth_category),
     anc_binary = first(anc_binary),
     v481 = first(v481),
@@ -412,7 +428,7 @@ km_data_TZ_adj <- data_subset_TZ %>%
   filter(eventmonth_since_pregnancy >= 2 & eventmonth_since_pregnancy <= 21)
 
 km_fit_TZ_adj <- survfit(
-  Surv(eventmonth_since_pregnancy, anemia) ~ 1,  # No need for dhscc (only Tanzania)
+  Surv(eventmonth_since_pregnancy, anemia) ~ 1, # No need for dhscc (only Tanzania)
   data = km_data_TZ_adj
 )
 
@@ -442,12 +458,26 @@ cb_temp_TZ_adj <- crossbasis(
 )
 
 model_cox_normal_TZ_adj <- coxph(
-  Surv(eventmonth_since_pregnancy, anemia) ~ cb_temp_TZ_adj + age_binary + v025 + edu_binary + wealth_category + anc_binary + v481 + tobacco_consumption + ironTab_binary, # dhscc removed, since only Tanzania is included
+  Surv(eventmonth_since_pregnancy, anemia) ~
+    cb_temp_TZ_adj +
+      age_binary +
+      v025 +
+      edu_binary +
+      wealth_category +
+      anc_binary +
+      v481 +
+      tobacco_consumption +
+      ironTab_binary, # dhscc removed, since only Tanzania is included
   data = km_data_TZ_adj
 )
 
 sjPlot::tab_model(model_cox_normal_TZ_adj)
-pred_TZ_adj <- crosspred(cb_temp_TZ_adj, model_cox_normal_TZ_adj, by = 0.1, cumul = TRUE)
+pred_TZ_adj <- crosspred(
+  cb_temp_TZ_adj,
+  model_cox_normal_TZ_adj,
+  by = 0.1,
+  cumul = TRUE
+)
 
 # Plot the overall cumulative effect for TZ adjusted
 plot(
@@ -487,7 +517,7 @@ plot(
 
 #Step4:DLNM for Nepal unadjusted
 data_subset_NP <- data %>%
-  filter(dhscc == "NP") %>%  # Keep only Tanzania
+  filter(dhscc == "NP") %>% # Keep only Tanzania
   select(
     unique_caseid,
     dhscc,
@@ -513,13 +543,13 @@ km_data_NP_uadj <- data_subset_NP %>%
   summarise(
     eventmonth_since_pregnancy = n(),
     anemia = max(anemia),
-    dhscc = first(dhscc)  # Already filtered for Tanzania
+    dhscc = first(dhscc) # Already filtered for Tanzania
   ) %>%
   ungroup() %>%
   filter(eventmonth_since_pregnancy >= 2 & eventmonth_since_pregnancy <= 21)
 
 km_fit_NP_uadj <- survfit(
-  Surv(eventmonth_since_pregnancy, anemia) ~ 1,  # No need for dhscc (only Nepal)
+  Surv(eventmonth_since_pregnancy, anemia) ~ 1, # No need for dhscc (only Nepal)
   data = km_data_NP_uadj
 )
 
@@ -549,12 +579,17 @@ cb_temp_NP_uadj <- crossbasis(
 )
 
 model_cox_normal_NP_uadj <- coxph(
-  Surv(eventmonth_since_pregnancy, anemia) ~ cb_temp_NP_uadj,  # dhscc removed, since only Tanzania is included
+  Surv(eventmonth_since_pregnancy, anemia) ~ cb_temp_NP_uadj, # dhscc removed, since only Tanzania is included
   data = km_data_NP_uadj
 )
 
 sjPlot::tab_model(model_cox_normal_NP_uadj)
-pred_NP_uadj <- crosspred(cb_temp_NP_uadj, model_cox_normal_NP_uadj, by = 0.1, cumul = TRUE)
+pred_NP_uadj <- crosspred(
+  cb_temp_NP_uadj,
+  model_cox_normal_NP_uadj,
+  by = 0.1,
+  cumul = TRUE
+)
 
 # Plot the overall cumulative effect for NP unadjusted
 plot(
@@ -600,9 +635,9 @@ km_data_NP_adj <- data_subset_NP %>%
     eventmonth_since_pregnancy = n(),
     anemia = max(anemia),
     dhscc = first(dhscc),
-    age_binary =  first(age_binary),
+    age_binary = first(age_binary),
     v025 = first(v025),
-    edu_binary = first(edu_binary),  # Ensure edu_binary is retained
+    edu_binary = first(edu_binary), # Ensure edu_binary is retained
     wealth_category = first(wealth_category),
     anc_binary = first(anc_binary),
     v481 = first(v481),
@@ -613,7 +648,7 @@ km_data_NP_adj <- data_subset_NP %>%
   filter(eventmonth_since_pregnancy >= 2 & eventmonth_since_pregnancy <= 21)
 
 km_fit_NP_adj <- survfit(
-  Surv(eventmonth_since_pregnancy, anemia) ~ 1,  # No need for dhscc (only Nepal)
+  Surv(eventmonth_since_pregnancy, anemia) ~ 1, # No need for dhscc (only Nepal)
   data = km_data_NP_adj
 )
 
@@ -643,12 +678,26 @@ cb_temp_NP_adj <- crossbasis(
 )
 
 model_cox_normal_NP_adj <- coxph(
-  Surv(eventmonth_since_pregnancy, anemia) ~ cb_temp_NP_adj + age_binary + v025 + edu_binary + wealth_category + anc_binary + v481 + tobacco_consumption + ironTab_binary, # dhscc removed, since only Tanzania is included
+  Surv(eventmonth_since_pregnancy, anemia) ~
+    cb_temp_NP_adj +
+      age_binary +
+      v025 +
+      edu_binary +
+      wealth_category +
+      anc_binary +
+      v481 +
+      tobacco_consumption +
+      ironTab_binary, # dhscc removed, since only Tanzania is included
   data = km_data_NP_adj
 )
 
 sjPlot::tab_model(model_cox_normal_NP_adj)
-pred_NP_adj <- crosspred(cb_temp_NP_adj, model_cox_normal_NP_adj, by = 0.1, cumul = TRUE)
+pred_NP_adj <- crosspred(
+  cb_temp_NP_adj,
+  model_cox_normal_NP_adj,
+  by = 0.1,
+  cumul = TRUE
+)
 
 # Plot the overall cumulative effect for NP adjusted
 plot(
@@ -688,7 +737,7 @@ plot(
 
 #Step5: DLNM for Mozambique unadjusted
 data_subset_MZ <- data %>%
-  filter(dhscc == "MZ") %>%  # Keep only Mozambique
+  filter(dhscc == "MZ") %>% # Keep only Mozambique
   select(
     unique_caseid,
     dhscc,
@@ -714,13 +763,13 @@ km_data_MZ_uadj <- data_subset_MZ %>%
   summarise(
     eventmonth_since_pregnancy = n(),
     anemia = max(anemia),
-    dhscc = first(dhscc)  # Already filtered for MZ
+    dhscc = first(dhscc) # Already filtered for MZ
   ) %>%
   ungroup() %>%
   filter(eventmonth_since_pregnancy >= 2 & eventmonth_since_pregnancy <= 21)
 
 km_fit_MZ_uadj <- survfit(
-  Surv(eventmonth_since_pregnancy, anemia) ~ 1,  # No need for dhscc (only Mozambique)
+  Surv(eventmonth_since_pregnancy, anemia) ~ 1, # No need for dhscc (only Mozambique)
   data = km_data_MZ_uadj
 )
 
@@ -750,12 +799,17 @@ cb_temp_MZ_uadj <- crossbasis(
 )
 
 model_cox_normal_MZ_uadj <- coxph(
-  Surv(eventmonth_since_pregnancy, anemia) ~ cb_temp_MZ_uadj,  # dhscc removed, since only Mozambique is included
+  Surv(eventmonth_since_pregnancy, anemia) ~ cb_temp_MZ_uadj, # dhscc removed, since only Mozambique is included
   data = km_data_MZ_uadj
 )
 
 sjPlot::tab_model(model_cox_normal_MZ_uadj)
-pred_MZ_uadj <- crosspred(cb_temp_MZ_uadj, model_cox_normal_MZ_uadj, by = 0.1, cumul = TRUE)
+pred_MZ_uadj <- crosspred(
+  cb_temp_MZ_uadj,
+  model_cox_normal_MZ_uadj,
+  by = 0.1,
+  cumul = TRUE
+)
 
 # Plot the overall cumulative effect for MZ unadjusted
 plot(
@@ -801,9 +855,9 @@ km_data_MZ_adj <- data_subset_MZ %>%
     eventmonth_since_pregnancy = n(),
     anemia = max(anemia),
     dhscc = first(dhscc),
-    age_binary =  first(age_binary),
+    age_binary = first(age_binary),
     v025 = first(v025),
-    edu_binary = first(edu_binary),  # Ensure edu_binary is retained
+    edu_binary = first(edu_binary), # Ensure edu_binary is retained
     wealth_category = first(wealth_category),
     anc_binary = first(anc_binary),
     v481 = first(v481),
@@ -815,7 +869,7 @@ km_data_MZ_adj <- data_subset_MZ %>%
   filter(eventmonth_since_pregnancy >= 2 & eventmonth_since_pregnancy <= 21)
 
 km_fit_MZ_adj <- survfit(
-  Surv(eventmonth_since_pregnancy, anemia) ~ 1,  # No need for dhscc (only Mozambique)
+  Surv(eventmonth_since_pregnancy, anemia) ~ 1, # No need for dhscc (only Mozambique)
   data = km_data_MZ_adj
 )
 
@@ -845,12 +899,27 @@ cb_temp_MZ_adj <- crossbasis(
 )
 
 model_cox_normal_MZ_adj <- coxph(
-  Surv(eventmonth_since_pregnancy, anemia) ~ cb_temp_MZ_adj + age_binary + v025 + edu_binary + wealth_category + anc_binary + v481 + depression_status + tobacco_consumption + ironTab_binary, # dhscc removed, since only Tanzania is included
+  Surv(eventmonth_since_pregnancy, anemia) ~
+    cb_temp_MZ_adj +
+      age_binary +
+      v025 +
+      edu_binary +
+      wealth_category +
+      anc_binary +
+      v481 +
+      depression_status +
+      tobacco_consumption +
+      ironTab_binary, # dhscc removed, since only Tanzania is included
   data = km_data_MZ_adj
 )
 
 sjPlot::tab_model(model_cox_normal_MZ_adj)
-pred_MZ_adj <- crosspred(cb_temp_MZ_adj, model_cox_normal_MZ_adj, by = 0.1, cumul = TRUE)
+pred_MZ_adj <- crosspred(
+  cb_temp_MZ_adj,
+  model_cox_normal_MZ_adj,
+  by = 0.1,
+  cumul = TRUE
+)
 
 # Plot the overall cumulative effect for MZ adjusted
 plot(
@@ -890,7 +959,7 @@ plot(
 
 #Step6: DLNM for Lesotho unadjusted
 data_subset_LS <- data %>%
-  filter(dhscc == "LS") %>%  # Keep only Lesotho
+  filter(dhscc == "LS") %>% # Keep only Lesotho
   select(
     unique_caseid,
     dhscc,
@@ -916,13 +985,13 @@ km_data_LS_uadj <- data_subset_LS %>%
   summarise(
     eventmonth_since_pregnancy = n(),
     anemia = max(anemia),
-    dhscc = first(dhscc)  # Already filtered for LS
+    dhscc = first(dhscc) # Already filtered for LS
   ) %>%
   ungroup() %>%
   filter(eventmonth_since_pregnancy >= 2 & eventmonth_since_pregnancy <= 21)
 
 km_fit_LS_uadj <- survfit(
-  Surv(eventmonth_since_pregnancy, anemia) ~ 1,  # No need for dhscc (only Lesotho)
+  Surv(eventmonth_since_pregnancy, anemia) ~ 1, # No need for dhscc (only Lesotho)
   data = km_data_LS_uadj
 )
 
@@ -952,12 +1021,17 @@ cb_temp_LS_uadj <- crossbasis(
 )
 
 model_cox_normal_LS_uadj <- coxph(
-  Surv(eventmonth_since_pregnancy, anemia) ~ cb_temp_LS_uadj,  # dhscc removed, since only Lesotho is included
+  Surv(eventmonth_since_pregnancy, anemia) ~ cb_temp_LS_uadj, # dhscc removed, since only Lesotho is included
   data = km_data_LS_uadj
 )
 
 sjPlot::tab_model(model_cox_normal_LS_uadj)
-pred_LS_uadj <- crosspred(cb_temp_LS_uadj, model_cox_normal_LS_uadj, by = 0.1, cumul = TRUE)
+pred_LS_uadj <- crosspred(
+  cb_temp_LS_uadj,
+  model_cox_normal_LS_uadj,
+  by = 0.1,
+  cumul = TRUE
+)
 
 # Plot the overall cumulative effect for LS unadjusted
 plot(
@@ -1003,9 +1077,9 @@ km_data_LS_adj <- data_subset_LS %>%
     eventmonth_since_pregnancy = n(),
     anemia = max(anemia),
     dhscc = first(dhscc),
-    age_binary =  first(age_binary),
+    age_binary = first(age_binary),
     v025 = first(v025),
-    edu_binary = first(edu_binary),  # Ensure edu_binary is retained
+    edu_binary = first(edu_binary), # Ensure edu_binary is retained
     wealth_category = first(wealth_category),
     anc_binary = first(anc_binary),
     v481 = first(v481),
@@ -1017,7 +1091,7 @@ km_data_LS_adj <- data_subset_LS %>%
   filter(eventmonth_since_pregnancy >= 2 & eventmonth_since_pregnancy <= 21)
 
 km_fit_LS_adj <- survfit(
-  Surv(eventmonth_since_pregnancy, anemia) ~ 1,  # No need for dhscc (only Lesotho)
+  Surv(eventmonth_since_pregnancy, anemia) ~ 1, # No need for dhscc (only Lesotho)
   data = km_data_LS_adj
 )
 
@@ -1047,12 +1121,27 @@ cb_temp_LS_adj <- crossbasis(
 )
 
 model_cox_normal_LS_adj <- coxph(
-  Surv(eventmonth_since_pregnancy, anemia) ~ cb_temp_LS_adj + age_binary + v025 + edu_binary + wealth_category + anc_binary + v481 + depression_status + tobacco_consumption + ironTab_binary, # dhscc removed, since only Tanzania is included
+  Surv(eventmonth_since_pregnancy, anemia) ~
+    cb_temp_LS_adj +
+      age_binary +
+      v025 +
+      edu_binary +
+      wealth_category +
+      anc_binary +
+      v481 +
+      depression_status +
+      tobacco_consumption +
+      ironTab_binary, # dhscc removed, since only Tanzania is included
   data = km_data_LS_adj
 )
 
 sjPlot::tab_model(model_cox_normal_LS_adj)
-pred_LS_adj <- crosspred(cb_temp_LS_adj, model_cox_normal_LS_adj, by = 0.1, cumul = TRUE)
+pred_LS_adj <- crosspred(
+  cb_temp_LS_adj,
+  model_cox_normal_LS_adj,
+  by = 0.1,
+  cumul = TRUE
+)
 
 # Plot the overall cumulative effect for LS adjusted
 plot(

@@ -1,7 +1,13 @@
 ---
-title: "Welcome"
+title: "Introduction to R and Quarto"
 format: html
 ---
+
+For more detail contents, please have a look on `chapter 3 - chapter 15` of [`The Epidemiology R Handbook` ](https://epirhandbook.com/en/)
+
+For you, who comes from STATA, chapter 4 [`Transition to R`](https://epirhandbook.com/en/new_pages/transition_to_R.html) might be helpful
+
+The presentation below will cover key concepts in R and Quarto
 
 [View slides in full screen](1-welcome.qmd).
 

@@ -38,6 +38,87 @@ countdown::countdown(minutes = 5, bottom = 0)
 | 11:45 - 12:00| Lunch Break                                              |
 
 
+## Working with R 
+
+-   Install R alone would be enough for analysis 
+-   Working with R before was very difficult due to lacking of supporting features of the development environment like code completion, syntax highlighting, project management, etc.
+-   `RStudio IDE` released in 2013 and `Positron IDE` released in 2024 makes working with R much easier 
+  
+::: columns
+::: {.column width="50%"}
+![](https://docs.posit.co/ide/user/ide/get-started/images/rstudio-panes-labeled.jpeg){ width=700px, height=500px }
+:::
+
+
+::: {.column width="50%"}
+![](https://positron.posit.co/images/astropy.png){ width=500px, height=500px }
+:::
+::: 
+
+## Working directory
+::: columns
+::: {.column width="80%"}
+-   A data analysis project must be organized in a folder structure
+-   If you work with Rstudio, you should create a Rstudio project
+-   It helps addressing a lot of stress regarding `setwd()`, `getwd()`
+-   If you work with Positron, you don't need to create a project 
+-   In STATA or SPSS, you work with `.dta` and `.sav` file, which is assumed as your project, but also a data file
+-   For R and general programming language, a project and a data file is two different concepts
+
+:::
+
+::: {.column width="20%"}
+![](/images/project-tree.png)
+:::
+:::
+
+
+## Import and export data
+-   Use of the **rio** package to flexibly `import()` and `export()` many types of files
+-   Use of the **here** package to locate files relative to an R project root - to prevent complications from file paths that are specific to one computer
+-   Specific import scenarios, such as:
+    -   Specific Excel sheets
+    -   Messy headers and skipping rows
+    -   From Google sheets
+    -   From data posted to websites
+    -   With APIs
+    -   Importing the most recent file
+-   Manual data entry
+-   R-specific file types such as RDS and RData
+-   Exporting/saving files and plots
+
+## Import and export data
+
+- `import()` function is versatile to import any kind of data, while `here()` function is used to construct the file path.
+- The use of `here()` is to create a **relative file path**, avoiding cross OS system, different computers problems.
+
+```{r}
+#| echo: true
+#| eval: true
+
+here::here("data", "Linet_14.04.2025.dta")
+```
+
+
+```{r}
+#| echo: true
+#| eval: false
+
+data <- import(here("data", "Linet_14.04.2025.dta"))
+```
+
+**DON'T**
+
+```{r}
+#| echo: true
+#| eval: false
+data <- import("D:/04 EXPERIMENTS/gothenburg_ws/data/Linet_14.04.2025.dta")
+```
+
+- R allows you to work with `multple datasets` at the same time
+- You can export safely your cleaned data into a `.Rds` file, share with colleagues and re-use but it is not a common practice
+- **WHY?** Because file size is usually large. In the era of big data, it is not optimal. Also having no *cleaned* data file *forces* you to write a reproducible code
+
 ## Basic R syntax
 
 ### Pipes
@@ -80,21 +161,10 @@ Windows: `Ctrl` + `Shift` + `M`
 
 Mac: `Cmd` + `Shift` + `M`
 
-
-
-## Namespacing
-
-`package::function()`
-
-`dplyr::select()`
-
-
--   tells R explicitly to use the function `select` from the package `dplyr`
--   helps avoid name conflicts (e.g., `MASS::select()`)
--   does not require to call `library(dplyr)`
-
 ## Load packages
 
+-   R provides built-in `baseR` functions, which does not require to load
+-   Functions from external libraries needs to be loaded before hand
 -   Classically, load single package with `library(package_name)` function
 -   The modern syntax using `pacman::p_load()` function (pacman: package manager)
 -   `pacman` will automatically install and load package
@@ -130,7 +200,61 @@ pacman::p_load(
 :::
 :::
 
+
+## Namespacing
+
+`package::function()`
+
+`dplyr::select()`
+
+-   used when we just need to use 1 function from a package 1,2 times only
+-   the `::` notations means to access `function()` from the `package`
+-   i.e., tells R explicitly to use the function `select` from the package `dplyr`
+-   helps avoid name conflicts (e.g., `MASS::select()`)
+-   does not require to call `library(dplyr)`
+
+## Data wrangling with `tidyverse packages`
+
+-   There are many functions and packages in R, you are not supposed to remember them all
+-   Remember core packages of `tidyverse` meta-packages solves 80% of your daily data cleaning tasks
+    -   `dplyr`: for transforming data. Key functions includs `group_by()`, `select()`, `filter()`, `rename()`, `mutate()`, `arrange()`, `distinct()`
+    -   `tidyr`: for tidying data. Key functions includes `drop_na()`, `pivot_longer()`, `pivot_wider()`
+    -   `stringr`: for working with string and characters. Key functions includes `str_detect()`, `str_extract()`
+    -   `forcats`: for working with categorical variables (factor). 
+    -   `lubridate`: for working date variables
+    -   `ggplot2`: for creating plots
+
+```{r}
+library(tidyverse)
+```
+
 ## Quarto 
 
-Quarto is a publishing system that supports many multiple & outputs
+::: columns
+::: {.column width="50%"}
+-   Quarto is a publishing system that supports many multiple & outputs like `docx`, `pdf`, `html`, `pptx`
+-   This website and slides are create with `Quarto`
+-   It allows for open science and data communication
+-   A simple Quarto document is a single `.qmd` file consists of:
+    -   A YAML healding: always on top of the document
+    -   Code blocks: any places in the document
+    -   Text blocks (markdown): any places in the document
+-   If you want to create a more complex output like a website, book, you need a `Quarto project`
+:::
 
+
+::: {.column width="50%"}
+![](https://quarto.org/docs/get-started/hello/images/rstudio-source-visual.png)
+
+:::
+:::
+
+## Practice!!! 
+
+1. Create a folder dedicated for a data analysis project according to the recommended structure
+2. Use your IDE of choice, either RStudio or Positron to start the project
+3. Create a Quarto document 
+4. Start importing your data
+5. Write code to explore your data and write your comments about them
+6. Write to clean your data and write your comments on how data changed 
+7. Export your cleaned data for later use

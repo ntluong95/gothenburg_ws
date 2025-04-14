@@ -1,0 +1,950 @@
+-
+title: "Data visualization with ggplot2<br>![](../images/logo.png){width=5em}"
+format: revealjs
+-
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, 
+                      warning = FALSE, 
+                      message = FALSE, 
+                      fig.retina = 3  ## retina more effective than w/h (according to twitter)
+                      # fig.width = 16, 
+                      # fig.height = 10
+                      )
+## I dont know why this is included in the example xaringan slide 
+## but is something to do with background images
+options(htmltools.dir.version = FALSE)
+
+## install and load necessary packages 
+pacman::p_load(
+  rio,        # importing data  
+  here,       # relative file pathways  
+  janitor,    # data cleaning and tables
+  lubridate,  # dates
+  ggExtra,    # extras
+  scales,     # formatting of scales
+  tidyverse   # data management and visualization
+)
+
+```
+
+```{r, include=FALSE}
+# data prep 
+surv <- rio::import(here::here("data", "surveillance_linelist_clean_20141201.rds"))
+```
+
+
+## Data visualization with {ggplot2}  
+
+
+```{r, eval = TRUE, echo = FALSE, out.width = "50%"}
+# adding xfun::relative_path() creates a dynamic file path between the Rmd location and the here() path.
+# It dynamically creates the ../../etc filepath.
+
+knitr::include_graphics(xfun::relative_path(here::here("images", "ggplot_intro", "ggplot2_hex.png")))
+```
+
+
+
+
+
+# Visualization options in R  
+
+Today we focus on {ggplot2} because it:  
+
+* is good for fast data exploration of multi-dimensional data  
+* produces very **high quality** final outputs  
+* has well-structured grammar => **high consistency** 
+* is accompanied by many packages that expand functionality  
+
+See the [R graph gallery](https://www.r-graph-gallery.com/ggplot2-package.html) for inspiration.  
+
+Other plotting options include [**base** R](https://towardsdatascience.com/base-plotting-in-r-eb365da06b22), [**lattice**](https://www.statmethods.net/advgraphs/trellis.html), and [**plotly**](https://plotly.com/r/).
+  
+
+
+
+
+
+
+# Was it made with ggplot?  
+
+
+```{r, eval = TRUE, echo = FALSE, out.width = "100%"}
+# adding xfun::relative_path() creates a dynamic file path between the Rmd location and the here() path.
+# It dynamically creates the ../../etc filepath.
+
+knitr::include_graphics(xfun::relative_path(here::here("images", "ggplot_intro", "clustering.png")))
+```
+
+
+
+
+# Was it made with ggplot?  
+
+
+```{r, eval = TRUE, echo = FALSE, out.width = "50%"}
+# adding xfun::relative_path() creates a dynamic file path between the Rmd location and the here() path.
+# It dynamically creates the ../../etc filepath.
+
+knitr::include_graphics(xfun::relative_path(here::here("images", "ggplot_intro", "dumbbell_chart.png")))
+```
+
+
+
+
+# Was it made with ggplot?  
+
+
+```{r, eval = TRUE, echo = FALSE, out.width = "50%"}
+# adding xfun::relative_path() creates a dynamic file path between the Rmd location and the here() path.
+# It dynamically creates the ../../etc filepath.
+
+knitr::include_graphics(xfun::relative_path(here::here("images", "ggplot_intro", "map.png")))
+```
+
+
+
+
+# Was it made with ggplot?  
+
+
+```{r, eval = TRUE, echo = FALSE, out.width = "100%"}
+# adding xfun::relative_path() creates a dynamic file path between the Rmd location and the here() path.
+# It dynamically creates the ../../etc filepath.
+
+knitr::include_graphics(xfun::relative_path(here::here("images", "ggplot_intro", "bike_london.png")))
+```
+
+
+
+
+# Was it made with ggplot?  
+
+
+```{r, eval = TRUE, echo = FALSE, out.width = "90%"}
+# adding xfun::relative_path() creates a dynamic file path between the Rmd location and the here() path.
+# It dynamically creates the ../../etc filepath.
+
+knitr::include_graphics(xfun::relative_path(here::here("images", "ggplot_intro", "swiss_map.png")))
+```
+
+
+
+
+# Was it made with ggplot?  
+
+
+```{r, eval = TRUE, echo = FALSE, out.width = "60%"}
+# adding xfun::relative_path() creates a dynamic file path between the Rmd location and the here() path.
+# It dynamically creates the ../../etc filepath.
+
+knitr::include_graphics(xfun::relative_path(here::here("images", "ggplot_intro", "phylo_tree.png")))
+```
+
+
+
+
+# Was it made with ggplot?  
+
+
+```{r, eval = TRUE, echo = FALSE, out.width = "100%"}
+# adding xfun::relative_path() creates a dynamic file path between the Rmd location and the here() path.
+# It dynamically creates the ../../etc filepath.
+
+knitr::include_graphics(xfun::relative_path(here::here("images", "ggplot_intro", "uk_geography.jpg")))
+```
+
+
+
+# Was it made with ggplot?  
+
+
+```{r, eval = TRUE, echo = FALSE, out.width = "50%"}
+# adding xfun::relative_path() creates a dynamic file path between the Rmd location and the here() path.
+# It dynamically creates the ../../etc filepath.
+
+knitr::include_graphics(xfun::relative_path(here::here("images", "ggplot_intro", "art_ggplot.png")))
+```
+
+
+
+
+# Was it made with ggplot?  
+
+
+```{r, eval = TRUE, echo = FALSE, out.width = "80%"}
+# adding xfun::relative_path() creates a dynamic file path between the Rmd location and the here() path.
+# It dynamically creates the ../../etc filepath.
+
+knitr::include_graphics(xfun::relative_path(here::here("images", "ggplot_intro", "van_gogh.jpg")))
+```
+
+
+
+
+
+# gg-what??  
+
+ 
+- "gg" represents the “grammar of graphics” used to construct the figures 
+  
+- The {ggplot2} *package* is the most popular data visualization tool in R  
+
+- Its `ggplot()` *function* is at the core of the package  
+
+- This whole approach is colloquially known as “ggplotting”  
+
+- Resulting figures are sometimes affectionately called “ggplots”  
+
+{ggplot2} is accompanied by numerous packages that extend its functionalities, such as {gganimate}, {ggthemr}, {ggdendro}, {gghighlight}, {ggforce}...  
+
+
+
+# Grammar of Graphics  
+
+Build a plot by adding layers of functions which specify data and design elements  
+
+
+
+The order usually looks like this:
+
+1) **"Open" the plot** with the `ggplot()` command and **specify the dataset**  
+
+
+
+2) **"Map" data columns** to "aesthetic" plot features (axes, color, size, shape)  
+
+
+
+3) **Display the data** as “geom” layers  
+
+
+
+4) **Modify "scales"**, such as color scale or y-axis break points  
+
+
+
+5) **Adjust non-data "theme" elements** such as axis labels, title, caption, & fonts
+
+These layers are "added" sequentially with **`+`** symbols.  
+
+
+**Remember that although the commands may be long, it is infinitely easier to edit and recycle than in Excel  **
+
+
+
+
+# Open the plot  
+
+
+```{r, echo = TRUE, eval = FALSE, tidy = FALSE}
+ggplot()                   
+```
+
+`ggplot()` creates an empty canvas.  
+
+
+
+```{r , echo = FALSE, eval = TRUE}
+ggplot()
+```
+ 
+
+
+This is only a blank canvas, we have not defined the data yet.  
+
+
+# Add the data  
+
+
+```{r, echo = TRUE, eval = FALSE, tidy = FALSE}
+ggplot(data = surv)                   
+```
+
+Assign the data frame to use.  
+
+Alternatively, use the `%>%` pipe operator to "pipe" a data frame *into* `ggplot()`  
+
+```{r , echo = TRUE, eval = FALSE, tidy = FALSE}
+surv %>%
+  ggplot()
+```
+
+
+
+
+
+```{r , echo = FALSE, eval = TRUE}
+ggplot(data = surv)
+```
+ 
+
+This is still a blank canvas, we have not defined what should be in the x and y axes. 
+If several data frames are needed, they can be added in their own geoms.
+Piping is useful to make one-time changes to a dataset prior to plotting.  
+
+
+
+
+
+# Add the data  
+
+
+
+```{r, echo = TRUE, eval = FALSE, tidy = FALSE}
+ggplot(
+  data = surv)                   
+```
+
+Newlines and indents will not impact the code execution.  
+
+They can make longer commands easier to read...  
+
+
+
+
+
+
+```{r , echo = FALSE, eval = TRUE}
+ggplot(data = surv)
+```
+ 
+
+# Mappings with `aes()`  
+
+
+```{r, eval=F, echo=T}
+ggplot(
+  data = surv,
+  mapping = aes())        #<<
+```
+
+Plot "aesthetics" are features like position, color, shape...  
+
+`mapping = aes()` maps "aesthetics" to columns in the data.  
+
+
+
+```{r , echo = FALSE, eval = TRUE}
+ggplot(
+  data = surv,
+  mapping = aes())+
+theme_grey(base_size = 16)
+```
+ 
+
+Tips: ggplot commands tend to get very vertical (long)  
+
+
+# Mappings with `aes()`  
+
+
+
+```{r, eval=F, echo=T}
+ggplot(
+  data = surv,
+  mapping = aes(        
+   x = age_years       #<<
+   ))               
+```
+
+Aesthetic mappings are placed within `aes()`.  
+
+Two basic mappings are axes to columns, via:  
+`x = `   
+
+
+
+
+```{r , echo = FALSE, eval = TRUE}
+ggplot(
+  data = surv,
+  mapping = aes(
+   x = age_years))+
+theme_grey(base_size = 16)
+```
+ 
+
+Tips: ggplot commands tend to get very vertical (long)  
+
+
+
+
+
+# Mappings with `aes()`  
+
+
+
+```{r, eval=F, echo=T}
+ggplot(
+  data = surv,
+  mapping = aes(        
+   x = age_years,       #<<
+   y = ht_cm))          #<<
+```
+
+Aesthetic mappings are placed within `aes()`.  
+
+Two basic mappings are axes to columns, via:  
+`x = ` and `y = `
+
+
+
+
+
+
+```{r , echo = FALSE, eval = TRUE}
+ggplot(
+  data = surv,
+  mapping = aes(
+   x = age_years,
+   y = ht_cm))+
+theme_grey(base_size = 16)
+```
+ 
+
+Tips: ggplot commands tend to get very vertical (long)  
+
+
+
+# Add geometry  
+
+
+
+```{r eval=F, echo=T}
+ggplot(
+  data = surv,
+  mapping = aes(
+    x = age_years,
+    y = ht_cm)) +
+*geom_point()
+```
+
+Data are visualized using "geom" commands, such as `geom_point()`.  
+
+These commands are "added"  
+with a **`+`** to the `ggplot()` command.  
+
+
+
+```{r eval=T, echo=F, message=F, warning=F}
+ggplot(
+  data = surv,
+  mapping = aes(
+   x = age_years,
+   y = ht_cm)) +
+geom_point() + 
+theme_grey(base_size = 16)
+```
+
+
+# Geometries  
+
+Some typical “geoms” include:  
+
+- Histograms: `geom_histogram()`  
+
+- Geom Points:`geom_point()`
+
+- Full list [here](https://ggplot2.tidyverse.org/reference/)
+  
+
+```{r, message=F, warning=F}
+
+# Histogram
+histogram <- ggplot(
+    data = surv,
+    mapping = aes(
+      x = date_onset))+
+  geom_histogram(fill = "darkorange")+
+  labs(title = "geom_histogram()")+
+  theme_minimal(base_size = 16)
+  
+
+points <- ggplot(
+    data = surv,
+    mapping = aes(
+      x = age_years,       
+      y = ht_cm)
+    )+
+  geom_point()+
+  labs(title = "geom_point()")+
+  theme_minimal(base_size = 16)
+
+
+cowplot::plot_grid(histogram, points,
+                          nrow = 2, rel_widths = c(2,2))
+
+#cowplot::plot_grid(top, lines, ncol = 1)
+
+```
+
+
+# Geometries  
+
+Some typical “geoms” include:  
+
+Some typical “geoms” include:  
+
+- Lines: `geom_line()`  
+- Bar plots|`geom_bar()` or `geom_col()`  
+- The choice between `geom_bar()` and `geom_col()` depends on the structure of your data. 
+
+```{r, message=F, warning=F}
+
+lines <- surv %>% 
+  group_by(hospital,
+           week_report = lubridate::floor_date(date_onset, "week")) %>% 
+  summarise(n_cases = n()) %>% 
+  drop_na(week_report) %>% 
+  ggplot(
+    mapping = aes(
+      x = week_report,       
+      y = n_cases,
+      color = hospital),
+    size = 4
+    )+
+  geom_line()+
+  labs(title = "geom_line()")+
+  theme_minimal(base_size = 16)
+
+bars <- surv %>% 
+  ggplot(mapping = aes(
+      y = sex,
+      fill = sex))+
+  geom_bar()+
+  labs(title = "geom_bar()")+
+  theme_minimal(base_size = 16)+
+  theme(legend.position = "none")
+
+cowplot::plot_grid(lines, bars,
+                   nrow = 2, rel_widths = c(2,2))
+
+
+```
+
+
+# Geometries  
+
+
+- Boxplots: `geom_boxplot()`  
+- Violin plots: `geom_violin()` 
+
+```{r, message=F, warning=F}
+
+boxplots <- ggplot(
+    data = surv,
+    mapping = aes(
+      x = fever,       
+      y = temp)
+    )+
+  geom_boxplot()+
+  labs(title = "geom_boxplot()")+
+  theme_minimal(base_size = 16)
+
+
+
+violins <- ggplot(
+    data = surv,
+    mapping = aes(
+      x = fever,       
+      y = temp,
+      fill = fever)
+    )+
+  geom_violin()+
+  labs(title = "geom_violin()")+
+  theme_minimal(base_size = 16)
+
+
+cowplot::plot_grid(boxplots, violins,
+                          #smooth, density,
+                          
+                          nrow = 2, rel_widths = c(2,2))
+
+
+```
+
+
+
+# Adding geoms  
+
+
+
+```{r, echo = TRUE, eval = FALSE, tidy = FALSE}
+ggplot(
+  data = surv,
+  mapping = aes(
+   x = age_years,
+   y = ht_cm)) +
+*geom_point()
+```
+
+With axes now mapped, `geom_point()` displays the data as points.  
+
+
+```{r , echo = FALSE, eval = TRUE, tidy = FALSE}
+ggplot(
+  data = surv,
+  mapping = aes(
+   x = age_years,
+   y = ht_cm)) +
+geom_point() +
+theme_grey(base_size = 16)
+```
+
+ 
+
+# Adding geoms  
+
+
+
+```{r, echo = TRUE, eval = FALSE, tidy = FALSE}
+ggplot(
+  data = surv,
+  mapping = aes(
+   x = age_years,
+   y = ht_cm)) +
+geom_point() +
+*geom_smooth()
+```
+
+We can add additional geoms to the current plot with `+`.  
+
+*Geoms appear in the order they are written*: the smoothed line appears over the points.  
+
+
+```{r , echo = FALSE, eval = TRUE, tidy = FALSE}
+ggplot(
+  data = surv,
+  mapping = aes(
+    x = age_years,
+    y = ht_cm)) +
+geom_point() +
+geom_smooth() +
+theme_grey(base_size = 16)
+```
+ 
+
+
+# A quick note on indentations  
+
+Indentations, spaces, and newlines do not impact code execution, and can be varied to improve readability.  
+
+```{r, echo = TRUE, eval = FALSE, tidy = FALSE}
+ggplot(data = surv, mapping = aes(x = age_years, y = ht_cm)) + geom_point()
+```
+
+
+is the same as:  
+
+```{r, echo = TRUE, eval = FALSE, tidy = FALSE}
+ggplot(data = surv,
+       mapping = aes(x = age_years, y = ht_cm)) +
+geom_point()
+```
+
+
+is the same as:  
+
+```{r, echo = TRUE, eval = FALSE, tidy = FALSE}
+ggplot(
+  data = surv,        # use case linelist
+  mapping = aes(      # make aesthetic mappings for all geoms
+    x = age_years,    # assign x-axis to age column
+    y = ht_cm)) +     # assign y-axis to height
+geom_point()          # display data as points
+```
+
+
+# Other aesthetics  
+
+- Which of the above is easier to read for you?
+- Which one do you prefer? 
+  - long style can enable informative comments/annotations
+  - short style very dense (harder to read for some). 
+- Shorter scripts, but so what? The number of lines of your code is not an informative metric.
+- very long lines => needs to scroll horizontally for people with smaller monitors (not nice)
+- long-ish style makes it easier to see which argument belongs to each function
+- spaces around "=" or "+" => make it easier to parse to many people
+- other?
+
+
+
+# Other aesthetics  
+
+Note that “aesthetic” in ggplot has a specific meaning that you might associate with the word “aesthetics” in common English. In ggplot those details are called “themes” and are adjusted within a theme() command. Each geom accepts certain aesthetics, like `binwidth=` for `geom_histogram()`. Aside from axes, other common "aesthetics" include: 
+
+Argument|Controls 
+-|---------------------------------------------------------------
+`shape`      |Display of point as dot, star, triangle, square...
+`fill`       |The *interior* color (e.g of bar or boxplot) 
+`color`      |The *exterior* or bar, boxplot - OR point color  
+`size`       |Line thickness, point size...
+`alpha`      |Transparency: 0 (invisible) to 1 (opaque) 
+`width`      |Width of "bar plot" bars
+`linetype`   |Either solid, dashed, dotted, etc.  
+`binwidth`   |Width of histogram bins  
+--------------------------------------------------------------  
+
+
+# Static aesthetic assignment  
+
+```{r, echo = TRUE, eval = FALSE}
+ggplot(
+  data = surv,
+  mapping = aes(
+    x = age_years,
+    y = ht_cm)) + 
+*geom_point(color = "seagreen")
+```
+
+
+**Static** aesthetic assignments are to a **number or character value**.  
+
+The change applies to **all** data points.  
+
+Written **outside `aes()`**.  
+
+Other static examples you might use:  
+`size = 3`  
+`alpha = 0.5`  
+`fill = "purple"`  
+
+
+# Dynamic aesthetic assignment   
+
+
+```{r, echo = TRUE, eval = FALSE}
+ggplot(
+  data = surv,
+  mapping = aes(
+    x = age_years,
+    y = ht_cm,
+*   color = hospital)) +
+geom_point()
+```
+
+
+**Dynamic** aesthetic assignments are mapped to a **column name**.  
+
+This creates **groups** in the plot and generates a legend.  
+
+This is written **inside `aes()`**.  
+
+
+# Static and dynamic  
+
+::: columns
+::: {.column width="50%"}
+```{r, echo = TRUE, eval = FALSE, tidy = FALSE}
+ggplot(
+  data = surv,
+  mapping = aes(
+    x = age_years,
+    y = ht_cm,
+*   color = hospital)) +  
+geom_point(
+* size = 7, 
+* alpha = 0.6) 
+```
+
+Above, `size = 7` and `alpha = 0.5` are assigned statically, outside `aes()`.  
+
+`color=` is assigned to column `hospital`, within `aes()`.  
+:::
+
+::: {.column width="50%"}
+```{r , echo = FALSE, eval = TRUE, tidy = FALSE}
+ggplot(
+  data = surv,
+  mapping = aes(
+    x = age_years,
+    y = ht_cm,
+    color = hospital))+      # color varies by outcome
+geom_point(size = 7,         # all points 7x size
+           alpha = 0.5)+     # transparency 
+theme_grey(base_size = 16)     
+```
+
+:::
+::: 
+
+# Facets
+
+::: columns
+::: {.column width="50%"}
+```{r , echo = TRUE, eval = FALSE}
+ggplot(
+  data = surv,
+  mapping = aes(x = date_onset)) +
+geom_histogram() +
+*facet_wrap(~hospital)
+```
+
+Groups can also be displayed this way.  
+
+Facets are "small-multiples"  
+
+`facet_wrap()` produces one plot  
+per unique value in the column.  
+
+"~" before the column name is like the word "by" (..."by hospital")  
+
+:::
+
+::: {.column width="50%"}
+
+```{r }
+ggplot(
+  data = surv,
+  mapping = aes(x = date_onset)) +
+geom_histogram() +
+facet_wrap(~ hospital)+
+theme_grey(base_size = 16)
+```
+
+
+:::
+::: 
+
+# Facets
+
+::: columns
+
+::: {.column width="50%"}
+
+```{r, echo = TRUE, eval = FALSE}
+ggplot(
+  data = surv,
+  mapping = aes(x = date_onset)) +
+geom_histogram() +
+*facet_wrap(~hospital,
+            scales = "free_y")
+```
+
+:::
+
+::: {.column width="50%"}
+
+```{r, eval = TRUE, echo = F }
+ggplot(data = surv,
+       mapping = aes(x = date_onset)) +
+geom_histogram() +
+facet_wrap(~hospital,
+           scales = "free_y") +
+labs(caption = "Note the free y-axis")+
+theme_grey(base_size = 16)
+```
+
+:::
+::: 
+
+# Facets + `gghighlight()`
+
+::: columns
+
+::: {.column width="50%"}
+ggplot extension packages like {gghighlight} are useful.  
+
+`gghighlight()` casts a "shadow" behind each facet.  
+
+```{r , echo = TRUE, eval = FALSE, tidy = FALSE}
+ggplot(
+  data = surv,
+  mapping = aes(
+    x = date_onset,
+*   fill = hospital)) +
+geom_histogram() +
+facet_wrap(~ hospital) +
+*gghighlight()
+```
+
+:::
+
+::: {.column width="50%"}
+
+```{r }
+ggplot(
+  data = surv,
+  mapping = aes(
+    x = date_onset,
+    fill = hospital)) +
+geom_histogram() +
+facet_wrap(~ hospital) +
+gghighlight::gghighlight() +
+theme_minimal(base_size = 14)
+```
+
+:::
+
+:::
+
+# gghighlight
+
+::: columns
+
+::: {.column width="50%"}
+
+`gghighlight()` can also highlight specific values in other plot types  
+
+```{r, echo=TRUE, eval=F}
+surv %>% 
+  # get weekly counts by hospital
+  group_by(
+     hospital,
+     week = floor_date(date_onset, "week")
+     ) %>%
+  count() %>% 
+  
+  # plot
+  ggplot(
+    mapping = aes(
+      x = week,
+      y = n,
+      color = hospital)) +
+  geom_line() +
+* gghighlight(
+*   hospital == "Port Hospital")+
+  theme(legend.position = "none")
+  
+```
+
+:::
+
+::: {.column width="50%"}
+
+```{r echo=F, eval=T}
+surv %>% 
+  # get daily counts by zip code
+  group_by(
+     hospital,
+     week = floor_date(date_onset, "week")) %>%
+  count() %>% 
+  
+  # plot
+  ggplot(
+    mapping = aes(
+      x = week, 
+      y = n,
+      color = hospital)) +
+  geom_line()+
+  gghighlight::gghighlight(hospital == "Port Hospital") +
+  theme(legend.position = "none")+
+  theme_light(base_size = 16)+
+  labs(title = "Weekly cases by hospital", subtitle = "Port Hospital highlighted")
+```
+
+
+
+The code aggregates cases by week and hospital, and passes counts to ggplot
+
+Here we create data frame of cases per week per hospital, and plot with `geom_line()`. The highlight is applied to Port Hospital.  
+
+:::
+
+:::
+
+## Exercise 
+
+Practice with your own data.

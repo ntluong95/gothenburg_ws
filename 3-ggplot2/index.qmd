@@ -1,0 +1,10 @@
+---
+title: "Data visualization with ggplot2"
+format: html
+---
+
+[View slides in full screen](3-data-visualization.qmd).
+
+```{=html}
+<iframe class="slides" src="3-data-visualization.html""></iframe>
+```

@@ -46,13 +46,27 @@ website:
        text: Pre-work
      - href: license.qmd
        text: License
+
      - text: "---"
-     - section: Slides
+    #  - section: Slides
+
+     - text: "Day 1"
        contents:
        - href: 1-welcome/index.qmd
          text: Introduction to R & Quarto
-       - href: 3-dlnm/dlnm.qmd
-         text: dlnm package in R
+       - href: 2-dlnm/dlnm.qmd
+         text: Statistical Methods in Environmental Epidemiology
+     - text: "---"
+    #  - section: Slides
+     - text: "Day 2"
+       contents:
+       - href: 3-ggplot2/3-data-visualization.qmd
+         text: Data visualization with ggplot2
+       - href: 4-paper/heat_preterm-birth.qmd
+         text: Journal club discussion
+
+
+
      - text: "---"
      - section: Exercies
        contents:
@@ -60,10 +74,8 @@ website:
          text: Example analysis from Miriam's data
        - href: data/Lea_analysis.qmd
          text: Example analysis from Lea's data
-       - href: data/Linet_analysis.qmd
-         text: Example analysis from Linet's data
-       - href: 4-paper/heat_preterm-birth.qmd
-         text: Associations between ambient temperature and risk of preterm birth in Sweden
+      #  - href: data/Linet_analysis.qmd
+      #    text: Example analysis from Linet's data
 
 
 format:

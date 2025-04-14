@@ -17,7 +17,7 @@ release](https://github.com/ntluong95/gothenburg_ws)\
 
 ## Description
 
-This workshop is designed to build foundational skills in R, covering everything from importing and cleaning data to transforming it for analysis. It also introduces essential statistical techniques used in environmental epidemiology, including `Distributed Lag Non-linear Models (DLNM)`, `Cox regression`, `time series analysis`, and data visualization with `ggplot2`.
+This 2-days workshop is designed to build foundational skills in R, covering topics from importing, cleaning data to transforming it for analysis and data visualization. It also introduces essential statistical techniques used in environmental epidemiology, including `Distributed Lag Non-linear Models (DLNM)`, `Cox regression`, `time series analysis`, as well as data visualization with `ggplot2`.
 
 ## Learning objectives
 
