@@ -1,7 +1,7 @@
--
+---
 title: "Data visualization with ggplot2<br>![](../images/logo.png){width=5em}"
 format: revealjs
--
+---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE, 
