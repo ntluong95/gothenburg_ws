@@ -62,7 +62,6 @@ website:
          text: Example analysis from Lea's data
        - href: data/Linet_analysis.qmd
          text: Example analysis from Linet's data
-
        - href: 4-paper/heat_preterm-birth.qmd
          text: Associations between ambient temperature and risk of preterm birth in Sweden
 

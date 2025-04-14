@@ -69,14 +69,15 @@ g(\mu_i) = \alpha + \sum_{j=1}^J s_j\bigl(x_{ij}, \beta_j\bigr)
            + \sum_{k=1}^K \gamma_k\,u_{ik}
 $$
 
-In the illustrative example on Chicago data, the outcome Y~t~ is **daily death counts**, assumed to originate from a so-called **overdispersed Poisson distribution** with E(Y) = μ, V(Y) = $\phi$ μ, and a canonical log-link. The non-linear and delayed effects of ozone and temperature are modeled through as particular functions s~j~ which define the relationship along the two dimensions of predictor and lags. Generally, non-linear exposure-response dependencies are expressed in regression models through appropriate functions *s*. The main choices typically rely on functions describing smooth curves, like polynomials or spline functions. All of these functions apply a transformation of the original predictor to generate **a set of transformed variables included in the model as linear terms**. 
+In the illustrative example on Chicago data, the outcome Y~t~ is **daily death counts**, assumed to originate from a so-called **overdispersed Poisson distribution** with E(Y) = μ, V(Y) = $\phi$ μ, and a canonical log-link. The non-linear and delayed effects of ozone and temperature are modeled through as particular functions s~j~ which define the relationship along the two dimensions of predictor and lags. Generally, non-linear exposure-response dependencies are expressed in regression models through appropriate functions *s*. The main choices typically rely on functions describing smooth curves, like polynomials or spline functions. All of these functions apply a transformation of the original predictor to generate **a set of transformed variables included in the model as linear terms**.
 
-::: {.callout-caution}
-The DLNMs framework introduced in this paper is developed for time series data. The general expression of the basic model in allows this methodology to be applied to any family distribution and link function within (generalized) linear models (GLM), with extensions to generalized additive models (GAM) or models based on generalized estimating equations (GEE). However, the current implementation of DLNMs requires single series of equally-spaced, complete and ordered data.
+![](/images/gam.svg)
+
+::: callout-caution
+The DLNMs framework introduced in this paper is developed for time series data. The general expression of the basic model in allows this methodology to be applied to any family distribution and link function within (generalized) linear models (GLM), with extensions to generalized additive models (GAM) or models based on generalized estimating equations (GEE) [@perperoglou2019]. However, the current implementation of DLNMs requires single series of equally-spaced, complete and ordered data.
 :::
 
 ## Specifying a DLNM
-
 
 ```{r}
 basis.o3 <- crossbasis(
@@ -98,10 +99,9 @@ summary(basis.o3)
 summary(basis.temp)
 ```
 
-- The first argument x of crossbasis() is the predictor series, in this case chicagoNMMAPS$o3 and chicagoNMMAPS$temp.  The values in x are expected to represent an equally-spaced and ordered series, with the interval defining the lag unit
-- The cross-basis for ozone comprises a threshold function for the space of the predictor, with a linear relationship beyond 40.3 μgr/m3, and a dummy parameterization assuming constant distributed lag effects along the strata of lags 0-1, 2-5 and 6-10 ().
-- In contrast, the options for temperature are a cubic spline with 6 df (knots at equally-spaced percentiles by default) centered at 25°C, and a natural cubic spline (lagtype = “ns” by default) with 5 df (knots at equally-spaced values in the log scale of lags by default), up to a maximum of 30 lags.
-
+-   The first argument x of crossbasis() is the predictor series, in this case chicagoNMMAPS$o3 and chicagoNMMAPS$temp. The values in x are expected to represent an equally-spaced and ordered series, with the interval defining the lag unit
+-   The cross-basis for ozone comprises a threshold function for the space of the predictor, with a linear relationship beyond 40.3 μgr/m3, and a dummy parameterization assuming constant distributed lag effects along the strata of lags 0-1, 2-5 and 6-10 ().
+-   In contrast, the options for temperature are a cubic spline with 6 df (knots at equally-spaced percentiles by default) centered at 25°C, and a natural cubic spline (lagtype = “ns” by default) with 5 df (knots at equally-spaced values in the log scale of lags by default), up to a maximum of 30 lags.
 
 The cross-basis matrices can be included in the model formula of a common regression function in order to estimate the corresponding parameters η in (5). In the example, the final model includes also a natural cubic spline with 7 df/year to model the seasonal and long time trend components and a factor for day of the week, specified by the function ns() in the package splines, which needs to be loaded in the session. The code is:
 
@@ -144,12 +144,10 @@ pred.temp <- crosspred(
 
 The results stored in the `crosspred` object can be directly accessed to obtain specific figures or customized graphs other than those produced by dlnm plotting functions. For example, the overall effect for the 10-unit increase in ozone, expressed as RR and 95% confidence intervals, can be derived by:
 
-
 ```{r}
 pred.o3$allRRfit["50.3"] # RR = 1.05387
 cbind(pred.o3$allRRlow, pred.o3$allRRhigh)["50.3", ] # combine low and high value
 ```
-
 
 ```{r}
 source(here("3-dlnm/dlnm_example.R"))

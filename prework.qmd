@@ -12,6 +12,7 @@ Download and install the latest versions of R, RStudio, and Quarto:
 -   R 4.4.2 or above: <https://cran.r-project.org>
 -   RStudio 2024.12.1 or above: <https://posit.co/download/rstudio-desktop>
 -   An alternative to Rstudio is Positron, a next generation of Rstudio allowing you to work with R and Python together <https://positron.posit.co/download.html>
+-   Install Positron Data Science Pack extension <https://open-vsx.org/extension/ntluong95/positron-data-science-pack>
 -   Quarto 1.6 or above: <https://quarto.org/docs/download> 
 
 #### 2. R Packages
@@ -45,7 +46,7 @@ pacman::p_load(
 
   # plots - general
   #################
-  #ggplot2,         # included in tidyverse
+  # ggplot2,         # included in tidyverse
   cowplot, # combining plots
   RColorBrewer, # color scales
   gghighlight, # highlight a subset
