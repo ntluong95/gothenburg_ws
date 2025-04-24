@@ -75,6 +75,7 @@ pacman::p_load(
 Here are some good readings you can check before the workshop:
 
 - [The Epidemiologist R Handbook](https://epirhandbook.com/en/)
+- [Free R Course from The Global Health Network](https://thegraphcourses.org/self-paced/)
 - [A ggplot2 Tutorial for Beautiful Plotting in R](https://cedricscherer.netlify.app/2019/08/05/a-ggplot2-tutorial-for-beautiful-plotting-in-r/)
 - [Forecasting: Principles and Practice](https://otexts.com/fpp3/)
 - [CrossCarry: An R package for the analysis of data from a crossover design with GEE](https://arxiv.org/pdf/2304.02440)
