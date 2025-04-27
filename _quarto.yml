@@ -2,6 +2,7 @@ project:
   type: website
   render:
     - "*.qmd"
+    - "!data/Linet_analysis.qmd"
   preview:
     port: 3434
     browser: true
@@ -64,6 +65,8 @@ website:
          text: Data visualization with ggplot2
        - href: 4-paper/heat_preterm-birth.qmd
          text: Journal club discussion
+       - href: 5-meta-analysis/meta-analysis.qmd
+         text: Meta-regression         
 
 
 

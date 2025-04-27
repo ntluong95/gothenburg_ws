@@ -1,0 +1,171 @@
+---
+title: "Meta-regression introduction"
+author: "Luong Nguyen"
+date: "`r Sys.Date()`"
+format: html
+bibliography: ../references.bib
+---
+
+# Overview about meta-analysis
+
+- Meta-analysis is a technique to combine the results of multiple studies to arrive at a single conclusion about the overall effect of an intervention or exposure. This is particularly useful when individual studies may have small sample sizes or conflicting results [@harrer2021doing].
+
+- To perform a meta-analysis, we have to find an `effect size` which can be summarized across all studies. Sometimes, such effect sizes can be directly extracted from the publication; more often, we have to calculate them from other data reported in the studies. 
+  - Observational studies: 
+    - Mean: `n`, `mean`, `sd`
+    - Proportion: `n`, `event`
+    - Correlation coefficients: `n`, `cor`
+  - Experimental studies: 
+    - Mean differences: `n.e`, `mean.e`, `sd.e`, `n.c`, `mean.c`, `sd.c`
+    - Risk and Odds Ratios: `n.e`, `event.e`, `n.c`, `event.c`
+    - Incidence Rate Ratios: `event.e`, `time.e`, `event.c`, `time.c`
+    - Hazard Ratio: extract the log-hazard ratio and its corresponding standard error from all studies, then performing a meta-analysis using inverse-variance pooling
+
+![](../images/meta_flow_sep.png)
+
+- The Fixed-Effect and Random-Effects Model
+  - The fixed-effect model assumes that all effect sizes stem from a single, homogeneous population. It states that all studies share the same true effect size. The fixed-effect model assumes that all our studies are part of a homogeneous population and that `the only cause` for differences in observed effects is the `sampling error of studies`.
+  - The random-effects model assumes that `there is not only one true effect size` but a distribution of true effect sizes. The goal of the random-effects model is therefore not to estimate the one true effect size of all studies, but the mean of the distribution of true effects.
+
+
+# Meta-regression
+
+- Meta-regression is a meta-analysis that uses regression analysis to combine, compare, and synthesize research findings from multiple studies while adjusting for the effects of available covariates on a response variable.
+
+- Normal linear regression models use the ordinary least squares (OLS) method to find the regression line that fits the data best. In meta-regression, a modified method called weighted least squares (WLS) is used, which makes sure that studies with a smaller standard error are given a higher weight.
+
+```{r}
+pacman::p_load(
+  tidyverse,
+  dmetar,
+  meta
+)
+
+data(ThirdWave)
+glimpse(ThirdWave)
+```
+
+```{r}
+m.gen <- metagen(
+  TE = TE,
+  seTE = seTE,
+  studlab = Author,
+  data = ThirdWave,
+  sm = "SMD",
+  fixed = FALSE,
+  random = TRUE,
+  method.tau = "REML",
+  method.random.ci = "HK",
+  title = "Third Wave Psychotherapies"
+)
+```
+
+Using meta-regression, we want to examine if the `publication year` of a study can be used to predict its effect size
+
+```{r}
+#fmt: skip
+year <- c(2014, 1998, 2010, 1999, 2005, 2014, 
+          2019, 2010, 1982, 2020, 1978, 2001,
+          2018, 2002, 2009, 2011, 2011, 2013)
+```
+
+```{r}
+m.gen.reg <- metareg(m.gen, ~year)
+m.gen.reg
+```
+
+In the first line, the output tells us that a mixed-effects model has been fitted to the data, just as intended. The next few lines provide details on the amount of heterogeneity explained by the model. We see that the estimate of the residual heterogeneity variance, the variance that is not explained by the predictor, is $\hat\tau^2_{\text{unexplained}}=$ 0.019. 
+
+The output also provides us with an $I^2$ equivalent, which tells us that after inclusion of the predictor, 29.26% of the variability in our data can be attributed to the remaining between-study heterogeneity. In the normal random-effects meta-analysis model, we found that the $I^2$ heterogeneity was 63%, which means that the predictor was able to "explain away" a substantial amount of the differences in true effect sizes. 
+
+In the last line, we see the value of $R^2_*$, which in our example is 77%. This means that 77% of the difference in true effect sizes can be explained by the publication year, a value that is quite substantial.
+
+The next section contains a `Test for Residual Heterogeneity`, which is essentially the $Q$-test. Now, we test if the heterogeneity not explained by the predictor is significant. We see that this is the case, with $p$ = 0.03.
+
+The next part shows the `Test of Moderators`. We see that this test is also significant ($p$ = 0.0075). This means that our predictor, the publication year, does indeed influence the studies' effect size.
+
+The last section provides more details on the estimated regression coefficients. The first line shows the results for the intercept (`intrcpt`). This is the expected effect size (in our case: Hedges' $g$) when our predictor publication year is zero. In our example, this represents a scenario which is, arguably, a little contrived: it shows the predicted effect of a study conducted in the year 0, which is $\hat{g}=$ -36.15. This serves as yet another reminder that good statistical models do not have to be a perfect representation of reality; they just have to be **useful**. 
+
+The coefficient we are primarily interested in is the one in the second row. We see that the model's estimate of the regression weight for `year` is 0.01. This means that for every additional year, the effect size $g$ of a study is expected to rise by 0.01. Therefore, we can say that the effect sizes of studies have increased over time. The 95% confidence interval ranges from 0.005 to 0.3, showing that the effect is significant. 
+
+The **{meta}** package allows us to visualize a meta-regression using the `bubble` function. This creates a **bubble plot**, which shows the estimated regression slope, as well as the effect size of each study. To indicate the weight of a study, the bubbles have different sizes, with a greater size representing a higher weight. 
+
+To produce a bubble plot, we only have to plug our meta-regression object into the `bubble` function. Because we also want study labels to be displayed, we set `studlab` to `TRUE`. 
+
+
+```{r}
+#| fig-width: 10
+bubble(m.gen.reg, studlab = TRUE)
+```
+
+# Multiple Meta-Regression in R
+
+- The analysis is conducted using {metafor} package. This package provides a vast array of advanced functionality for meta-analysis, along with a great documentation
+
+::: {.callout-note}
+The “MVRegressionData” Data Set
+
+The MVRegressionData data set is included directly in the {dmetar} package. If you have installed {dmetar}, and loaded it from your library, running data(MVRegressionData) automatically saves the data set in your R environment. The data set is then ready to be used. If you do not have {dmetar} installed, you can download the data set as an .rda file from the Internet, save it in your working directory, and then click on it in your R Studio window to import it.
+:::
+
+```{r}
+pacman::p_load(
+  metafor,
+  PerformanceAnalytics
+)
+
+data(MVRegressionData)
+glimpse(MVRegressionData)
+```
+
+## Checking for Multi-Collinearity
+
+
+```{r}
+MVRegressionData[, c("reputation", "quality", "pubyear")] %>% cor()
+
+# Visualizae the result
+
+MVRegressionData[, c("reputation", "quality", "pubyear")] %>%
+  chart.Correlation()
+```
+
+## Fitting a Multiple Meta-Regression Model
+
+**Using only quality as a predictor**
+
+```{r}
+m.qual <- rma(
+  yi = yi,
+  sei = sei,
+  data = MVRegressionData,
+  method = "ML",
+  mods = ~quality,
+  test = "knha"
+)
+
+m.qual
+```
+
+**Next, we include reputation as a predictor**
+
+
+```{r}
+m.qual.rep <- rma(
+  yi = yi,
+  sei = sei,
+  data = MVRegressionData,
+  method = "ML",
+  mods = ~ quality + reputation,
+  test = "knha"
+)
+
+m.qual.rep
+```
+
+
+```{r}
+anova(m.qual, m.qual.rep)
+```
+
+The anova function performs a likelihood ratio test, the results of which we can see in the LRT column. The test is highly significant, which means that that the new full model indeed provides a better fit.
